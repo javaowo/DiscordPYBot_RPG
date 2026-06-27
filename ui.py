@@ -682,6 +682,24 @@ class BattleControlView(SafeView):
                                     combo_data[t]['dmg'] += dmg
                                     combo_data[t]['hits'] += 1       # 👉 獨立計算連擊打中幾段
                                     combo_data[t]['logs'].extend(passive_logs)
+                                    
+                                if "音樂" in t.effects and combo_data[t]['dmg'] > 0 and not is_true:
+                                    can_trigger = False
+                                    if char.cid == "qiya": 
+                                        can_trigger, t.music_mark_source_atk = True, char.get_current_atk()
+                                    elif getattr(self, "active_domain", None) == "耳機世界":
+                                        domain_team = self.attackers if self.domain_owner in self.attackers else self.defenders
+                                        if char in domain_team: can_trigger = True
+                                            
+                                    if can_trigger:
+                                        stacks = getattr(t, "effect_stacks", {}).get("音樂", 1)
+                                        mark_atk = getattr(t, "music_mark_source_atk", char.get_current_atk()) 
+                                        extra_dmg = int(mark_atk * 0.03 * stacks)
+                                        if extra_dmg > 0:
+                                            edmg, elogs = t.take_damage(attacker=char, base_damage=extra_dmg, is_true_damage=True)
+                                            combo_data[t]['dmg'] += edmg
+                                            combo_data[t]['logs'].append(f" 🎵 [印記共鳴] (連擊)觸發 {stacks} 層 [音樂]印記，追加 `{edmg}` 點真實傷害！")
+                                            combo_data[t]['logs'].extend(elogs)
 
                         # 🌟 2. 結算輸出 (獨立排版與智慧防洗頻)
                         combo_total = sum(d['dmg'] for d in combo_data.values())
