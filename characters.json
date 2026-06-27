@@ -1,0 +1,224 @@
+{
+"dummy": {
+    "name": "測試假人．木樁",
+    "role": "坦克",
+    "tags": ["無限血量", "沙包測試"],
+    "hp": 999999999, "atk": 0, "defense": 50000,
+    "skills": {
+      "normal": { "name": "木樁撞擊", "multiplier": 0, "target_type": "all", "special_tag": "dummy_normal", "description": "木樁的攻擊深不見底" },
+      "small": { "name": "無", "multiplier": 0, "cd": 99, "initial_cd": 99, "target_type": "single", "description": "無" },
+      "ultimate": { "name": "無", "multiplier": 0, "cd": 99, "initial_cd": 99, "target_type": "single", "description": "無" },
+      "passive": { "name": "屹立不搖", "trigger": "passive", "description": "木樁的血量深不見底。" }
+    }
+  },
+"yinyu": {
+    "name": "棉絨偶戲．音妤", "role": "控場者", "tags": ["群攻", "暈眩"],
+    "hp": 1078522, "atk": 116521, "defense": 40250,
+    "skills": {
+      "normal": { "name": "音妤普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "暈眩", "effect_chance": 15, "description": "對敵方單體造成100%傷害，有15%機率附上一回合「暈眩」。" },
+      "small": { "name": "企鵝凝視", "multiplier": 1.0, "cd": 4, "initial_cd": 1, "target_type": "all", "hits": 1, "effect": "暈眩", "effect_value": 0, "effect_chance": 15, "effect_duration": 1, "special_tag": "yinyu_small", "description": "對敵方全體造成100%傷害，目標身上每個負面效果提升5%暈眩機率、每個正面效果提升5%傷害，最多上限五層。" },
+      "ultimate": { "name": "水室溫醞", "multiplier": 1.0, "cd": 4, "initial_cd": 2, "target_type": "primary_and_all", "hits": 1, "effect": "暈眩", "damage_type": "normal", "effect_chance": 15, "effect_duration": 1, "special_tag": "yinyu_ult", "description": "對敵方單體造成150%傷害，其餘目標造成100%傷害，有15%機率造成暈眩。若敵方僅有一人，則傷害提升至250%且暈眩機率提升至25%。" },
+      "passive": { "name": "拾起漣漪", "trigger": "on_hit", "chance": 25, "effect": "增攻", "effect_duration": 1, "description": "每次被敵方攻擊時，25%機率獲得一回合的「增攻」" }
+    }
+  },
+  "nao": {
+    "name": "藕斷絲連．奈緒", "role": "刺客", "tags": ["附毒", "降防"],
+    "hp": 1110131, "atk": 121101, "defense": 50111,
+    "skills": {
+      "normal": { "name": "奈緒普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "中毒", "effect_chance": 15, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有15%機率附上一回合「中毒」。" },
+      "small": { "name": "線條切割", "multiplier": 2.2, "cd": 4, "initial_cd": 1, "target_type": "single", "hits": 1, "effect": "降防", "effect_value": 0, "effect_chance": 100, "effect_duration": 2, "apply_effect_first": true, "description": "先對敵方單體造成降防，再造成220%傷害。" },
+      "ultimate": { "name": "彩絲亂縱", "multiplier": 0.5, "cd": 4, "initial_cd": 2, "target_type": "random_single_per_hit", "hits": 10, "effect": "中毒", "damage_type": "normal", "effect_chance": 25, "description": "隨機對敵方單體造成50%傷害，重複十次。每次攻擊皆有25%機率附上一回合「中毒」。" },
+      "passive": { "name": "絲線特性", "trigger": "passive", "chance": 100, "effect": "免疫中毒", "description": "自身免疫「中毒」效果。" }
+    }
+  },
+  "mingyu": {
+    "name": "竹林月語．明毓", "role": "坦克", "tags": ["護盾", "增防", "淨化"],
+    "hp": 1201120, "atk": 101121, "defense": 60113,
+    "skills": {
+      "normal": { "name": "明毓普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "降防", "effect_chance": 35, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有35%機率附上一回合「降防」。" },
+      "small": { "name": "竹林排海", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "team", "special_tag": "mingyu_small", "description": "給予全隊一回合的「增防」及75%自身防禦值的護盾。" },
+      "ultimate": { "name": "竹取草簾", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "team", "special_tag": "mingyu_ult", "description": "淨化全體一個負面效果，並給予兩回合的「增防」及150%自身防禦值的「護盾」。" },
+      "passive": { "name": "一竹擎天", "trigger": "on_hit", "cd": 1, "chance": 100, "effect": "增防", "effect_duration": 1, "description": "自身被攻擊時，獲得一回合的「增防」。" }
+    }
+  },
+  "yamian": {
+    "name": "燈綵月圓．雅綿", "role": "輔助", "tags": ["治癒", "混傷治療"],
+    "hp": 1083421, "atk": 117942, "defense": 51789,
+    "skills": {
+      "normal": { "name": "雅綿普攻", "multiplier": 1.0, "damage_type": "normal", "description": "對敵方單體造成100%傷害。" },
+      "small": { "name": "月燈照耀", "multiplier": 0.5, "cd": 4, "initial_cd": 1, "target_type": "all", "hits": 1, "special_tag": "yamian_small", "description": "對敵方全體造成50%傷害，同時全隊恢復自身攻擊50%血量。" },
+      "ultimate": { "name": "燈火通明", "multiplier": 0.5, "cd": 4, "initial_cd": 2, "target_type": "all", "hits": 1, "special_tag": "yamian_ult", "description": "對敵方全體造成50%傷害，同時給予我方全體兩回合的「治癒」。" },
+      "passive": { "name": "月之祝福", "trigger": "passive", "chance": 100, "effect": "none", "description": "每次自身進行治療時，自身也會獲得50%受療效果。" }
+    }
+  },
+  "lingyu": {
+    "name": "夙夜迎花．綾語", "role": "輔助", "tags": ["增攻", "保命", "低血自癒"],
+    "hp": 1050030, "atk": 105020, "defense": 57000,
+    "skills": {
+      "normal": { "name": "綾語普攻", "multiplier": 1.5, "damage_type": "normal", "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成總量150%自身攻擊的攤傷。" },
+      "small": { "name": "夜花滿盈", "multiplier": 0.0, "cd": 4, "initial_cd": 1, "target_type": "team", "hits": 1, "special_tag": "lingyu_small", "description": "給予全隊兩回合的「增攻」及「醒目」。" },
+      "ultimate": { "name": "夜風吹襲", "multiplier": 0.0, "cd": 4, "initial_cd": 2, "target_type": "team", "hits": 1, "special_tag": "lingyu_ult", "description": "給予全隊兩回合的「不屈」及「治癒」。" },
+      "passive": { "name": "夜花綻放", "trigger": "on_hit", "chance": 100, "max_triggers_per_battle": 1, "special_tag": "lingyu_passive", "description": "當自身生命小於10%時，自身立即恢復50%最大生命值，並獲得「免疫」兩回合。此效果整場戰鬥只能發動一次。" }
+    }
+  },
+  "lingyun": {
+    "name": "星星魔法．淩芸", "role": "法師", "tags": ["多體輸出", "隨機減益"],
+    "hp": 1100221, "atk": 114560, "defense": 51111,
+    "skills": {
+      "normal": { "name": "淩芸普攻", "multiplier": 0.5, "damage_type": "normal", "target_type": "random_multi", "target_count": 2, "description": "對敵方隨機兩個目標造成50%傷害。" },
+      "small": { "name": "升起氣球", "multiplier": 1.25, "cd": 3, "initial_cd": 1, "target_type": "random_multi", "target_count": 3, "hits": 1, "description": "對敵方隨機三個目標造成125%傷害。" },
+      "ultimate": { "name": "大星閃壓", "multiplier": 1.50, "cd": 3, "initial_cd": 2, "target_type": "random_multi", "target_count": 4, "hits": 1, "description": "對敵方隨機四個目標造成150%傷害。" },
+      "passive": { "name": "星光閃爍", "trigger": "on_deal_damage", "chance": 50, "effect": "none", "effect_duration": 1, "special_tag": "lingyun_passive", "description": "自身每次對敵方造成傷害時，都有50%機率對敵方附上以下隨機一個負面效果一回合（降攻/降防/中毒/禁療/封印/壓制/易傷/灼傷/鎖定）。" }
+    }
+  },
+  "yuming": {
+    "name": "夜街市區．羽蓂", "role": "戰士", "tags": ["破甲真傷", "殘血狙擊"],
+    "hp": 1056789, "atk": 123456, "defense": 49876,
+    "skills": {
+      "normal": { "name": "羽蓂普攻", "multiplier": 1.0, "damage_type": "true", "description": "對敵方單體造成100%真實傷害。" },
+      "small": { "name": "吹起泡泡", "multiplier": 2.0, "cd": 4, "initial_cd": 1, "target_type": "single", "damage_type": "true", "hits": 1, "description": "對敵方單體造成200%真實傷害。" },
+      "ultimate": { "name": "熱鬧的街市", "multiplier": 4.0, "cd": 5, "initial_cd": 2, "target_type": "lowest_hp", "damage_type": "true", "hits": 1, "description": "對敵方目前生命力最低的目標造成400%真實傷害。" },
+      "passive": { "name": "穿越鬧區", "trigger": "passive", "chance": 100, "effect": "none", "special_tag": "yuming_passive", "description": "自身所有攻擊無視敵方護盾。" }
+    }
+  },
+  "youda": {
+    "name": "清心蘇綠．尤妲", "role": "法師", "tags": ["附毒", "中毒延長"],
+    "hp": 1145140, "atk": 114514, "defense": 51919,
+    "skills": {
+      "normal": { "name": "尤妲普攻", "multiplier": 0.5, "damage_type": "normal", "description": "對敵方單體造成100%傷害。" },
+      "small": { "name": "酸綠情傷", "multiplier": 0.5, "cd": 2, "initial_cd": 1, "target_type": "all", "hits": 1, "effect": "中毒", "effect_chance": 25, "effect_duration": 2, "description": "對敵方全體造成100%傷害，50%機率附加兩回合「中毒」。" },
+      "ultimate": { "name": "碳酸劍殺", "multiplier": 0.75, "cd": 3, "initial_cd": 2, "target_type": "all", "hits": 1, "special_tag": "youda_ult", "description": "對敵方全體造成125%傷害並立即結算中毒效果。" },
+      "passive": { "name": "酸性腐蝕", "trigger": "on_turn_end", "cd": 2, "special_tag": "youda_passive", "description": "回合結束時隨機對一名敵人造成100%傷害（此傷害優先對攜帶「中毒」效果的目標發動），有75%機率延長一回合中毒效果。" }
+    }
+  },
+  "yemo": {
+    "name": "楓橋夜泊．葉茉", "role": "法師", "tags": ["冷卻重置", "壓制"],
+    "hp": 1200100, "atk": 97832, "defense": 51234,
+    "skills": {
+      "normal": { "name": "葉茉普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "禁療", "effect_chance": 50, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有50%機率附上「禁療」一回合。" },
+      "small": { "name": "楓葉飄零", "multiplier": 2.0, "cd": 4, "initial_cd": 1, "target_type": "highest_atk", "hits": 1, "effect": "沈默", "effect_chance": 50, "effect_duration": 2, "description": "對敵方攻擊力最高的目標造成200%傷害，有50%機率附加兩回合「沈默」。" },
+      "ultimate": { "name": "照起秋色", "multiplier": 1.5, "cd": 3, "initial_cd": 3, "target_type": "all", "hits": 1, "special_tag": "yemo_ult", "description": "對敵方全體造成150%傷害，有30%機率重置目標所有技能冷卻。" },
+      "passive": { "name": "楓船漂流", "trigger": "on_hit", "special_tag": "yemo_passive", "description": "自身生命值低於50%時，敵方對自身造成傷害皆有50%機率為目標附上一回合「壓制」。" }
+    }
+  },
+  "xinyue": {
+    "name": "眾月捧星．訢悅", "role": "輔助", "tags": ["護盾", "免疫", "壓制"],
+    "hp": 1162345, "atk": 111517, "defense": 52134,
+    "skills": {
+      "normal": { "name": "訢悅普攻", "multiplier": 1.0, "damage_type": "normal", "description": "對敵方單體造成100%傷害。" },
+      "small": { "name": "天撒星碎", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "team", "special_tag": "xinyue_small", "description": "給予我方全體自身攻擊力50%值的護盾。" },
+      "ultimate": { "name": "彎月照地", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "xinyue_ult", "description": "給予我方全體兩回合的「免疫」，同時給予敵方全體附上兩回合的「壓制」。" },
+      "passive": { "name": "星月相伴", "trigger": "passive", "special_tag": "xinyue_passive", "description": "自身免疫「壓制」、「技能冷卻延長」效果。" }
+    }
+  },
+  "yunya": {
+    "name": "青春之時．芸雅", "role": "戰士", "tags": ["折損爆發", "吸血"],
+    "hp": 1204500, "atk": 92300, "defense": 53200,
+    "skills": {
+      "normal": { "name": "芸雅普攻", "multiplier": 1.0, "damage_type": "normal", "special_tag": "yunya_normal", "description": "折損自身現有3%生命值，對敵方造成100%傷害及折損的生命值。" },
+      "small": { "name": "棒棒糖魔法", "multiplier": 2.35, "cd": 3, "initial_cd": 1, "target_type": "highest_atk", "effect": "降攻", "effect_chance": 100, "effect_duration": 2, "description": "對敵方攻擊力最高的目標造成235%傷害，同時附上兩回合的「降攻」。" },
+      "ultimate": { "name": "活力武術", "multiplier": 0, "cd": 5, "initial_cd": 3, "target_type": "single", "special_tag": "yunya_ult", "description": "折損自身現有50%生命，對敵方單體造成等同於折損生命值的真實傷害。" },
+      "passive": { "name": "青春能量", "trigger": "on_deal_damage", "chance": 100, "cd": 1, "special_tag": "yunya_passive", "description": "當自身生命力低於50%時，自身行動時可恢復等同於對敵方造成傷害值的30%生命值。" }
+    }
+  },
+  "yinjie": {
+    "name": "恆得之體．寅潔", "role": "控場者", "tags": ["魅惑"],
+    "hp": 1106700, "atk": 115190, "defense": 50379,
+    "skills": {
+      "normal": { "name": "寅潔普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "魅惑", "effect_chance": 15, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有15%機率附上一回合「魅惑」。" },
+      "small": { "name": "幻列之旋", "multiplier": 0.5, "cd": 4, "initial_cd": 2, "target_type": "all", "hits": 3, "effect": "魅惑", "effect_chance": 10, "effect_duration": 1, "apply_effect_per_hit": true, "description": "對敵方全體造成三段50%傷害，每段傷害皆有10%機率附上一回合「魅惑」。" },
+      "ultimate": { "name": "而後留生", "multiplier": 1.75, "cd": 5, "initial_cd": 1, "target_type": "all", "hits": 1, "effect": "魅惑", "effect_chance": 25, "effect_duration": 1, "description": "對敵方全體造成175%傷害，同時有25%機率附上一回合「魅惑」。" },
+      "passive": { "name": "永生之眠", "trigger": "passive", "effect": "免疫魅惑", "description": "自身免疫「魅惑」。" }
+    }
+  },
+  "yangyu": {
+    "name": "花之語．陽瑜", "role": "坦克", "tags": ["嘲諷減傷", "全場淨化", "冷卻操縱"],
+    "hp": 1234500, "atk": 109238, "defense": 60149,
+    "skills": {
+      "normal": { "name": "陽瑜普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "嘲諷", "effect_chance": 35, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有35%機率給自身附上一回合「嘲諷」。" },
+      "small": { "name": "花語：粉薔薇", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "self", "special_tag": "yangyu_small", "description": "給予自身兩回合的「嘲諷」及「治癒」。" },
+      "ultimate": { "name": "花語：百合", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "yangyu_ult", "description": "淨化全場所有負面效果。成功淨化我方則其所有技能冷卻減一回合；成功淨化敵方則其所有技能冷卻延長一回合（自身不受影響）。" },
+      "passive": { "name": "繁花守候", "trigger": "passive", "special_tag": "yangyu_passive", "description": "自身身上有「嘲諷」時，所受傷害減少35%。" }
+    }
+  },
+  "zixu": {
+    "name": "放學之後．梓旭", "role": "刺客", "tags": ["昏迷", "驅散"],
+    "hp": 1045890, "atk": 115234, "defense": 50239,
+    "skills": {
+      "normal": { "name": "梓旭普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "昏迷", "effect_chance": 15, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有15%機率造成「昏迷」一回合。" },
+      "small": { "name": "放學午後", "multiplier": 2.3, "cd": 4, "initial_cd": 1, "target_type": "single", "hits": 1, "effect": "昏迷", "effect_chance": 25, "effect_duration": 2, "special_tag": "zixu_small", "description": "先給予自身兩回合「增攻」，再對敵方單體造成230%傷害，同時有25%機率附上兩回合的「昏迷」。" },
+      "ultimate": { "name": "夕陽餘暉", "multiplier": 3.2, "cd": 4, "initial_cd": 2, "target_type": "single", "hits": 1, "effect": "昏迷", "effect_chance": 50, "effect_duration": 2, "special_tag": "zixu_ult", "description": "對敵方單體造成320%傷害，必定驅散一個正面效果且有50%機率附上兩回合「昏迷」。" },
+      "passive": { "name": "糜爛炫光", "trigger": "passive", "special_tag": "zixu_passive", "description": "自身優先對攜帶「昏迷」的目標進行攻擊。自身攻擊對帶有「昏迷」狀態的目標增加50%傷害。" }
+    }
+  },
+  "yuehong": {
+    "name": "雨之夜行．月虹", "role": "繪域師", "tags": ["降雨", "竊取", "吸血"],
+    "hp": 1129800, "atk": 105230, "defense": 55688,
+    "skills": {
+      "normal": { "name": "月虹普攻", "multiplier": 0, "target_type": "single", "special_tag": "yuehong_normal", "description": "對敵方單體造成75%傷害，同時吸收造成的傷害轉為恢復自身生命。" },
+      "small": { "name": "撐傘前行", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "single", "special_tag": "yuehong_small", "description": "對敵方單體造成三段傷害：第一段50%真實傷害；第二段75%傷害並竊取1個正面效果；第三段100%傷害並將造成的傷害恢復全隊。" },
+      "ultimate": { "name": "水的眷顧", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "all", "special_tag": "yuehong_ult", "description": "先給予自身三回合的「降雨」，再對敵方全體造成130%傷害，有25%機率附上兩回合「封印」。" },
+      "passive": { "name": "滴水穿傘", "trigger": "passive", "special_tag": "yuehong_passive", "description": "自身有「降雨」時，治療率提升50%，攻擊提升20%，防禦降低50%。" }
+    }
+  },
+  "jiyu": {
+    "name": "風花雪月．祭羽", "role": "法師", "tags": ["禁療", "負面延長", "狀態反轉"],
+    "hp": 1082345, "atk": 110098, "defense": 58230,
+    "skills": {
+      "normal": { "name": "祭羽普攻", "multiplier": 1.2, "damage_type": "normal", "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成120%攤傷。" },
+      "small": { "name": "掄起微風", "multiplier": 1.4, "cd": 3, "initial_cd": 1, "target_type": "all", "effect": "禁療", "effect_chance": 50, "effect_duration": 2, "description": "對敵方全體造成140%傷害，有50%機率附加兩回合「禁療」。" },
+      "ultimate": { "name": "靜語細拂", "multiplier": 1.6, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "jiyu_ult", "description": "對敵方全體造成160%傷害，延長目標所有負面效果一回合。" },
+      "passive": { "name": "順風庇護", "trigger": "passive", "cd": 1, "special_tag": "jiyu_passive", "description": "自身受到特定負面效果影響時，給予自身相對應的正面效果一回合（降攻轉增攻、降防轉增防、中毒轉治癒）。" }
+    }
+  },
+  "yuhe": {
+    "name": "天外之景．郁荷", "role": "坦克", "tags": ["淨化", "反傷"],
+    "hp": 1213345, "atk": 107893, "defense": 66666,
+    "skills": {
+      "normal": { "name": "郁荷普攻", "multiplier": 1.2, "target_type": "single", "special_tag": "yuhe_normal", "description": "對敵方單體造成120%傷害，有25%機率延長自身身上所有效果（不論正負）一回合。" },
+      "small": { "name": "欲見遠景", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "self", "special_tag": "yuhe_small", "description": "給予自身兩回合「嘲諷」及「反傷」。" },
+      "ultimate": { "name": "悠悠之心", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "team", "special_tag": "yuhe_ult", "description": "淨化我方攻擊力、生命力、防禦力各自基值最高成員的所有負面效果，並給予「增攻」、「增防」兩回合。" },
+      "passive": { "name": "天台高處", "trigger": "passive", "special_tag": "yuhe_passive", "description": "若我方僅存自身，則自身獲得永久無法驅散的「反傷」。" }
+    }
+  },
+  "xinqiao": {
+    "name": "鳥語花香．馨喬", "role": "繪域師", "tags": ["連擊", "降雨"],
+    "hp": 1011124, "atk": 117800, "defense": 53970,
+    "skills": {
+      "normal": { "name": "馨喬普攻", "multiplier": 1.0, "target_type": "single", "effect": "昏迷", "effect_chance": 15, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有15%機率附加一回合「昏迷」。" },
+      "small": { "name": "綻放之花", "multiplier": 1.25, "cd": 4, "initial_cd": 1, "target_type": "single", "special_tag": "xinqiao_small", "description": "對敵方單體造成125%傷害，給予自身「連擊」一回合。" },
+      "ultimate": { "name": "花綻地隔", "multiplier": 1.65, "cd": 4, "initial_cd": 2, "target_type": "single", "special_tag": "xinqiao_ult", "description": "對敵方單體造成165%傷害，給予自身兩回合的「降雨」。" },
+      "passive": { "name": "花香撲鼻", "trigger": "on_action_end", "special_tag": "xinqiao_passive", "description": "自身每次行動後，會額外追加一次普攻。" }
+    }
+  },
+  "niyu": {
+    "name": "甜愈苦澀．倪妤", "role": "刺客", "tags": ["中毒", "引爆", "效果免疫"],
+    "hp": 1073200, "atk": 113044, "defense": 53400,
+    "skills": {
+      "normal": { "name": "倪妤普攻", "multiplier": 0.6, "target_type": "random_multi", "target_count": 2, "description": "對敵方隨機兩個目標造成60%傷害。" },
+      "small": { "name": "重新調製", "multiplier": 1.0, "hits": 2, "cd": 4, "initial_cd": 1, "target_type": "random_multi", "target_count": 2, "special_tag": "niyu_small", "description": "隨機對兩個目標造成100%傷害，重複兩次。每次攻擊皆有25%機率附上兩回合「中毒」，若觸發「中毒」時目標已有「中毒」，則延長其效果一回合。" },
+      "ultimate": { "name": "灌淋霧彌", "multiplier": 1.0, "cd": 5, "initial_cd": 2, "target_type": "random_multi", "target_count": 3, "special_tag": "niyu_ult", "description": "對敵方隨機三個目標造成100%傷害，引爆目標身上所有效果，每個效果造成5%最大生命值上限真實傷害。" },
+      "passive": { "name": "咖啡精神", "trigger": "passive", "special_tag": "niyu_passive", "description": "若我方或敵方僅剩一人時，自身無法被附上任何效果。" }
+    }
+  },
+  "qiya": {
+    "name": "音域擴張．琪雅", "role": "繪域師", "tags": ["領域展開", "迴避"],
+    "hp": 1134000, "atk": 110340, "defense": 53400,
+    "skills": {
+      "normal": { "name": "琪雅普攻", "multiplier": 1.0, "target_type": "single", "effect": "音樂", "effect_duration": 999, "special_tag": "qiya_normal", "description": "對敵方單體造成100%傷害，並附上一層「音樂印記」。" },
+      "small": { "name": "餘音繚繞", "multiplier": 1.1, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "音樂", "effect_duration": 999, "description": "對敵方全體造成110%傷害，並附上一層「音樂印記」。" },
+      "ultimate": { "name": "音域擴張", "multiplier": 1.4, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "音樂", "effect_duration": 999, "special_tag": "qiya_ult", "description": "對全體造成140%傷害，附上一層「音樂印記」，並給予自身兩回合「迴避」。" },
+      "passive": { "name": "領域展開——耳機世界", "trigger": "passive", "special_tag": "qiya_passive", "description": "進場時發動，效果持續至自身死亡，領域展開期間，音樂印記中的額外傷害我方全體皆可觸發。" }
+    }
+  },
+  "yechen": {
+    "name": "花彩斑駁．曄宸", "role": "坦克", "tags": ["嘲諷", "護盾", "免傷", "抗寒"],
+    "hp": 1104300, "atk": 103400, "defense": 55000,
+    "skills": {
+      "normal": { "name": "曄宸普攻", "multiplier": 0, "target_type": "self", "special_tag": "yechen_normal", "description": "給予自身等同於自身攻擊力基質的護盾。" },
+      "small": { "name": "椅上回憶", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "self", "special_tag": "yechen_small", "description": "優先竊取場上的嘲諷（敵>我），若竊取成功，則給予自身一層「免傷印記」，並延長一回合「嘲諷」；反之，給予自身兩回合的「嘲諷」。" },
+      "ultimate": { "name": "千秋萬語", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "self", "special_tag": "yechen_ult", "description": "折損自身現有25%生命，轉為等值的「護盾」，給予自身兩回合「抗寒」及「治癒」。" },
+      "passive": { "name": "斑斕色彩", "trigger": "passive", "special_tag": "yechen_passive", "description": "每次自身的護盾被擊破時，給自己附上一層「免傷印記」。" }
+    }
+  }
+}
