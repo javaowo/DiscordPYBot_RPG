@@ -424,24 +424,44 @@ class BattleControlView(SafeView):
             log_lines = [f"**【第 {self.round_count} 回合戰報】**"]
             
             if not hasattr(self, "active_domain"): 
-                self.active_domain, self.domain_owner = None, None
+                self.active_domain, self.domain_owner, self.domain_duration = None, None, 0
                 
             if self.round_count == 1:
                 for c in self.attackers + self.defenders:
                     if getattr(c, "passive", None) and getattr(c.passive, "special_tag", None) == "qiya_passive":
-                        self.active_domain, self.domain_owner = "耳機世界", c
-                        log_lines.append(f" 🎧 **{c.name}** 展開了領域：【領域展開——耳機世界】！\n")
+                        self.active_domain, self.domain_owner, self.domain_duration = "耳機世界", c, 999
+                        log_lines.append(f" 🎧 **{c.name}** 展開了領域：【領域展開——耳機世界】！")
 
             owner = getattr(self, "domain_owner", None)
-            if owner is not None and owner.hp <= 0:
-                log_lines.append(f" 📴 **{owner.name}** 陣亡，【{self.active_domain}】領域隨之崩潰消失了。\n")
-                self.active_domain, self.domain_owner = None, None
+            if owner is not None:
+                if owner.hp <= 0:
+                    log_lines.append(f" 📴 **{owner.name}** 陣亡，【{self.active_domain}】領域隨之崩潰消失了。")
+                    self.active_domain, self.domain_owner, self.domain_duration = None, None, 0
+                # 👉 新增：回合開始時偵測領域是否到期
+                elif self.domain_duration <= 0:
+                    log_lines.append(f" 📴 【{self.active_domain}】領域的維持時間已到，效果解除了。")
+                    self.active_domain, self.domain_owner, self.domain_duration = None, None, 0
+            
+            # 👉 新增：在每回合開頭顯示當前場地！
+            if getattr(self, "active_domain", None):
+                dur_text = f" (剩餘 {self.domain_duration} 回合)" if self.domain_duration < 99 else ""
+                # 這裡留一個 \n 讓場地標題跟後續的戰鬥分開，比較美觀
+                log_lines.append(f" 🌌 **當前場地：【{self.active_domain}】**{dur_text}\n")
 
             alive_atks = [a for a in self.attackers if a.hp > 0]
             alive_defs = [d for d in self.defenders if d.hp > 0]
             for c in alive_atks + alive_defs:
+                # 倪妤被動
                 if getattr(c, "passive", None) and getattr(c.passive, "special_tag", None) == "niyu_passive":
                     c.is_immune_to_all = (len(alive_atks) == 1 or len(alive_defs) == 1)
+                
+                # 👉 🌻 棠謹領域：賦予所有人無法附上狀態的 tag
+                c.is_domain_immune = (getattr(self, "active_domain", None) == "繚繞的餘溫")
+                
+                # 👉 🌻 棠謹被動：只要場上有任何領域，小招就變 0 CD
+                if getattr(c, "passive", None) and getattr(c.passive, "special_tag", None) == "tangjin_passive":
+                    if getattr(self, "active_domain", None) is not None:
+                        c.small_skill.current_cd = 0
             
             for team_atks, team_defs in [(self.attackers, self.defenders), (self.defenders, self.attackers)]:
                 if not any(d.hp > 0 for d in team_defs): break
@@ -456,8 +476,17 @@ class BattleControlView(SafeView):
                     alive_atks = [a for a in self.attackers if a.hp > 0]
                     alive_defs = [d for d in self.defenders if d.hp > 0]
                     for c in alive_atks + alive_defs:
+                        # 倪妤被動
                         if getattr(c, "passive", None) and getattr(c.passive, "special_tag", None) == "niyu_passive":
                             c.is_immune_to_all = (len(alive_atks) == 1 or len(alive_defs) == 1)
+                        
+                        # 👉 🌻 棠謹領域：賦予所有人無法附上狀態的 tag
+                        c.is_domain_immune = (getattr(self, "active_domain", None) == "繚繞的餘溫")
+                        
+                        # 👉 🌻 棠謹被動：只要場上有任何領域，小招就變 0 CD
+                        if getattr(c, "passive", None) and getattr(c.passive, "special_tag", None) == "tangjin_passive":
+                            if getattr(self, "active_domain", None) is not None:
+                                c.small_skill.current_cd = 0
 
                     status, msg = char.get_action_status()
                     if status == "skip":
@@ -491,19 +520,26 @@ class BattleControlView(SafeView):
                             primary = random.choice(valid_targets)
                             targets = [primary] + [t for t in alive_targets if t != primary]
                         elif action.target_type == "random_multi":
+                            # 1. 先決定技能「想要」打幾個人
                             if getattr(action, "target_count", 0) > 0:
-                                num_targets = min(action.target_count, len(alive_targets))
+                                desired_targets = action.target_count
                             else:
-                                num_targets = min(random.randint(2, 3), len(alive_targets))
+                                desired_targets = random.randint(2, 3)
                                 
                             if taunted_enemies:
+                                # 嘲諷目標中也要優先避開有迴避的
                                 guaranteed = random.choice([t for t in taunted_enemies if "迴避" not in t.effects] or taunted_enemies)
                                 remaining_pool = [t for t in alive_targets if t != guaranteed]
                                 evasion_pool = [t for t in remaining_pool if "迴避" not in t.effects] or remaining_pool
-                                others = random.sample(evasion_pool, num_targets - 1) if remaining_pool else []
+                                
+                                # 👉 安全取樣：確保抽取的數量不會大於池子的人數
+                                others_count = min(desired_targets - 1, len(evasion_pool))
+                                others = random.sample(evasion_pool, others_count) if remaining_pool else []
                                 targets = [guaranteed] + others
                             else:
-                                targets = random.sample(valid_targets, num_targets)
+                                # 👉 安全取樣：確保不會超過 valid_targets (扣除迴避後) 的總人數
+                                actual_count = min(desired_targets, len(valid_targets))
+                                targets = random.sample(valid_targets, actual_count)
                         else:
                             if getattr(char, "passive", None) and getattr(char.passive, "special_tag", None) == "zixu_passive":
                                 coma_targets = [t for t in valid_targets if "昏迷" in t.effects]
@@ -647,9 +683,14 @@ class BattleControlView(SafeView):
                                     t.add_effect(action.effect, getattr(action, "effect_duration", 2), log_lines, value=effect_val)
 
                     if getattr(action, "special_tag", None):
+                        if action.special_tag == "tangjin_ult":
+                            self.active_domain, self.domain_owner, self.domain_duration = "繚繞的餘溫", char, 3
+                            log_lines.append(f" 🌻 **{char.name}** 展開了領域：【領域展開——繚繞的餘溫】！") 
+                            for c in alive_atks + alive_defs:
+                                c.is_domain_immune = True
                         allies_list = team_defs if char in team_atks else team_atks
-                        my_team = team_atks if char in team_atks else team_defs
-                        execute_special_skill(action.special_tag, char, char, my_team, log_lines, allies=allies_list)
+                        my_team_list = team_atks if char in team_atks else team_defs
+                        execute_special_skill(action.special_tag, char, char, targets, log_lines, allies=allies_list, my_team=my_team_list)
 
                     if action.category != "normal": action.current_cd = action.cd
                     
@@ -776,7 +817,9 @@ class BattleControlView(SafeView):
                 
             process_rain_effects(self.attackers, self.defenders, log_lines)
             process_rain_effects(self.defenders, self.attackers, log_lines)
-
+            
+            if getattr(self, "active_domain", None):
+                self.domain_duration -= 1
             self.round_count += 1
             atk_alive = any(a.hp > 0 for a in self.attackers)
             def_alive = any(d.hp > 0 for d in self.defenders)
