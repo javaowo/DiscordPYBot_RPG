@@ -43,7 +43,7 @@ def process_special_skill(tag, attacker, target, base_mult, base_chance, alive_e
     return new_mult, new_chance
 
 
-def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None):
+def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None, my_team=None):
     """【發動後】執行額外的技能效果與特殊機制"""
     
     if tag == "dummy_normal":
@@ -85,9 +85,10 @@ def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None
                 t.shield_hp += shield_amount
         log_lines.append(f" 🛡️ 全隊獲得了 `{shield_amount}` 點 [護盾]")
 
-    elif tag == "yamian_small" and allies:
+    elif tag == "yamian_small":
         heal_amt = int(caster.get_current_atk() * 1.0)
-        for a in allies:
+        # 👉 幫自己人補血
+        for a in (my_team if my_team else targets):
             if a.hp > 0:
                 a.apply_heal(heal_amt, log_lines, caster)
                 
@@ -96,21 +97,22 @@ def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None
         if actual_passive > 0:
             log_lines.append(f" 💖 **{caster.name}** 觸發被動，額外恢復 `{actual_passive}` 點生命")
 
-    elif tag == "yamian_ult" and allies:
+    elif tag == "yamian_ult":
         log_lines.append(f" ✨ 全隊獲得兩回合 [治癒]")
-        for a in allies:
+        # 👉 幫自己人上 Buff
+        for a in (my_team if my_team else targets):
             if a.hp > 0: a.add_effect("治癒", 2, log_lines, silent=True)
 
-    elif tag == "lingyu_small" and allies:
+    elif tag == "lingyu_small":
         log_lines.append(f" 🛡️ 全隊獲得兩回合 [增攻] 與 [醒目]")
-        for a in allies:
+        for a in (my_team if my_team else targets):
             if a.hp > 0:
                 a.add_effect("增攻", 2, log_lines, silent=True)
                 a.add_effect("醒目", 2, log_lines, silent=True)
                 
-    elif tag == "lingyu_ult" and allies:
+    elif tag == "lingyu_ult":
         log_lines.append(f" 🛡️ 全隊獲得兩回合 [不屈] 與 [治癒]")
-        for a in allies:
+        for a in (my_team if my_team else targets):
             if a.hp > 0:
                 a.add_effect("不屈", 2, log_lines, silent=True)
                 a.add_effect("治癒", 2, log_lines, silent=True)
@@ -122,35 +124,44 @@ def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None
                 poison_dmg = int(t.max_hp * 0.05 * duration)
                 del t.effects["中毒"]
                 if "中毒" in getattr(t, "effect_stacks", {}): del t.effect_stacks["中毒"]
-                
-                dmg, p_logs = t.take_damage(attacker=caster, base_damage=poison_dmg, is_true_damage=True)
+                dmg, p_logs = t.take_damage(attacker=caster, base_damage=poison_dmg) 
                 log_lines.append(f" 💥 **{caster.name}** 引爆毒素，結算 `{duration}` 回合中毒")
-                log_lines.append(f" └ 擊中 **{t.name}**，造成 `{dmg}` 點真實傷害")
+                log_lines.append(f" └ 擊中 **{t.name}**，造成 `{dmg}` 點傷害") 
                 log_lines.extend(p_logs)
 
     elif tag == "yemo_ult":
         for t in targets:
-            if t.hp > 0 and random.randint(1, 100) <= 60:
+            if t.hp > 0 and random.randint(1, 100) <= 25:
                 if getattr(t, "passive", None) and getattr(t.passive, "special_tag", None) == "xinyue_passive":
-                    log_lines.append(f" ✨ **{t.name}** 觸發 [星月加護]，免疫了冷卻重置")
+                    log_lines.append(f" ✨ **{t.name}** 觸發 [星月相伴]，免疫了冷卻重置")
                 else:
                     if getattr(t, "small_skill", None): t.small_skill.current_cd = t.small_skill.cd
                     if getattr(t, "ult_skill", None): t.ult_skill.current_cd = t.ult_skill.cd
                     log_lines.append(f" 🕰️ **{t.name}** 受到秋色干擾，所有技能冷卻被重置了")
                     
-    elif tag == "xinyue_small" and allies:
-        shield_amount = int(caster.get_current_atk() * 0.5)
-        for a in allies:
+    elif tag == "xinyue_small":
+        shield_amount = int(caster.get_current_atk() * 1.0) # 👉 改成 100%
+        # 👉 使用 my_team 確保一定上給自己人
+        for a in (my_team if my_team else targets):
             if a.hp > 0:
                 a.shield_hp += shield_amount
         log_lines.append(f" 🛡️ 全隊獲得了 `{shield_amount}` 點 [護盾]")
                 
     elif tag == "xinyue_ult":
-        if allies:
-            log_lines.append(f" 🌙 全隊獲得兩回合 [免疫]")
-            for a in allies:
-                if a.hp > 0: a.add_effect("免疫", 2, log_lines, silent=True)
+        log_lines.append(f" 🌙 全隊獲得兩回合 [免疫]")
+        
+        # 👉 幫自己人上 Buff (my_team)
+        for a in (my_team if my_team else targets):
+            if a.hp > 0: 
+                a.add_effect("免疫", 2, log_lines, silent=True)
                 
+        log_lines.append(f" ⛓️ 敵方全體被附加了兩回合 [壓制]")
+        
+        if allies:
+            for t in allies:
+                if t.hp > 0: 
+                    t.add_effect("壓制", 2, log_lines, silent=True)
+
         log_lines.append(f" ⛓️ 敵方全體被附加了兩回合 [壓制]")
         for t in targets:
             if t.hp > 0: t.add_effect("壓制", 2, log_lines, silent=True)
@@ -366,9 +377,6 @@ def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None
                     ddmg, p_logs = t.take_damage(attacker=caster, base_damage=detonate_dmg, is_true_damage=True)
                     log_lines.append(f" 💥 **{caster.name}** 引爆了 **{t.name}** 身上的 {len(effects_to_remove)} 個效果，造成 `{ddmg}` 真實傷害！")
                     log_lines.extend(p_logs)
-                    
-    elif tag == "qiya_ult":
-        caster.add_effect("迴避", 2, log_lines)
         
     elif tag == "yechen_normal":
         shield_val = caster.get_current_atk()
@@ -394,10 +402,9 @@ def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None
                 
         # 若敵方沒有，搜尋我方隊友是否有嘲諷 (避開自己)
         if not stolen_success:
-            # 這裡需要傳入我方全體，你可以從主迴圈那邊抓
-            all_allies = [c for c in (targets + [caster]) if c.hp > 0 and c != caster]
-            for a in all_allies:
-                if "嘲諷" in a.effects:
+            # 👉 改用傳進來的 my_team 尋找隊友
+            for a in (my_team if my_team else []):
+                if a != caster and "嘲諷" in a.effects:
                     rem_duration = a.effects["嘲諷"]
                     del a.effects["嘲諷"]
                     if "嘲諷" in getattr(a, "effect_stacks", {}): del a.effect_stacks["嘲諷"]
@@ -428,15 +435,96 @@ def execute_special_skill(tag, attacker, caster, targets, log_lines, allies=None
         # 獲得兩回合抗寒與治癒
         caster.add_effect("抗寒", 2, log_lines)
         caster.add_effect("治癒", 2, log_lines)
+        
+    elif tag == "lingmo_ult":
+        for t in targets:
+            if t.hp > 0:
+                if random.randint(1, 100) <= 50:
+                    t.add_effect("壓制", 2, log_lines)
+                if random.randint(1, 100) <= 50:
+                    t.add_effect("禁療", 2, log_lines)
+                    
+    elif tag == "tangjin_normal":
+        if caster.hp > 1:
+            loss = int(caster.hp * 0.1)
+            caster.hp = max(1, caster.hp - loss)
+            log_lines.append(f" 🩸 **{caster.name}** 折損了 `{loss}` 點現有生命，化為繚繞的琴音！")
+            
+            # targets 在 target_type="team" 時會是自己的隊友名單
+            for a in targets:
+                if a != caster and a.hp > 0:
+                    actual_heal = a.apply_heal(loss, log_lines, caster)
+                    if actual_heal > 0:
+                        log_lines.append(f" 💚 **{a.name}** 受到琴音治癒，恢復了 `{actual_heal}` 點生命！")
+                        
+    elif tag == "tangjin_small":
+        for t in targets:
+            if t.hp > 0 and random.randint(1, 100) <= 50:
+                # 尋找目標身上的正面狀態 (BUFF)
+                buffs = [k for k in t.effects.keys() if k in BUFF_LIST]
+                if buffs:
+                    dispelled = random.choice(buffs)
+                    del t.effects[dispelled]
+                    if dispelled in getattr(t, "effect_stacks", {}): del t.effect_stacks[dispelled]
+                    
+                    from ui import EFFECT_EMOJI_MAP
+                    log_lines.append(f" 💨 琴聲迴盪，**{caster.name}** 驅散了 **{t.name}** 的 [{EFFECT_EMOJI_MAP.get(dispelled, '')}{dispelled}]！")
+
+    elif tag == "tingmi_ult":
+        for t in targets:
+            if t.hp > 0:
+                # 取得目前冰霜層數，算出冰凍機率
+                stacks = getattr(t, "effect_stacks", {}).get("冰霜", 0)
+                freeze_chance = stacks * 10
+                
+                if freeze_chance > 0 and random.randint(1, 100) <= freeze_chance:
+                    # 成功冰凍！給予狀態並清除冰霜印記
+                    t.add_effect("冰凍", 1, log_lines)
+                    if "冰霜" in t.effects:
+                        del t.effects["冰霜"]
+                    if "冰霜" in getattr(t, "effect_stacks", {}):
+                        del t.effect_stacks["冰霜"]
+                    log_lines.append(f" 🧊 **{t.name}** 身上的寒氣被徹底引爆，[冰霜] 轉化為了絕對的 [冰凍]！")
+                else:
+                    # 未觸發或沒機率，則附加一層冰霜
+                    t.add_effect("冰霜", 999, log_lines)
+                    
+    elif tag == "yingmu_small":
+        for t in targets:
+            if t.hp > 0:
+                t.add_effect("抗寒", 2, log_lines, silent=True)
+                t.add_effect("治癒", 2, log_lines, silent=True)
+        log_lines.append(f" ❄️ 全隊獲得兩回合 [抗寒] 與 [治癒]")
+
+    # 🌙 瀅暮大招：寐謎茫海 (復活 / 最低血量大補)
+    elif tag == "yingmu_ult":
+        # 👉 改用傳進來的 my_team 撈出真正陣亡的隊友
+        dead_allies = [t for t in (my_team if my_team else []) if t.hp <= 0]
+        heal_amount = int(caster.max_hp * 0.5)
+        
+        if dead_allies:
+            revive_target = random.choice(dead_allies)
+            revive_target.hp = heal_amount
+            revive_target.effects.clear()
+            if hasattr(revive_target, "effect_stacks"):
+                revive_target.effect_stacks.clear()
+                
+            log_lines.append(f" 👼 **{caster.name}** 施展秘術，將 **{revive_target.name}** 從死亡邊緣拉回，並恢復了 `{heal_amount}` 點生命！")
+        else:
+            # 👉 改用傳進來的 my_team 尋找存活者
+            alive_allies = [t for t in (my_team if my_team else []) if t.hp > 0]
+            if alive_allies:
+                lowest_hp_ally = min(alive_allies, key=lambda x: x.hp / x.max_hp)
+                actual_heal = lowest_hp_ally.apply_heal(heal_amount, log_lines, caster)
+                log_lines.append(f" 🌊 **{caster.name}** 的茫海之力湧動，為 **{lowest_hp_ally.name}** 恢復了 `{actual_heal}` 點生命！")
 
 def check_special_passive(tag, defender, attacker):
     """【被動判定】檢查特殊被動是否滿足觸發條件"""
     if tag == "lingyu_passive":
-        return defender.hp < (defender.max_hp * 0.1)
+        return defender.hp < (defender.max_hp * 0.3)
     if tag == "yemo_passive":
         return defender.hp < (defender.max_hp * 0.5)
     return True
-
 
 # ==========================================
 # 📊 資料類別 (Data Classes)
@@ -607,6 +695,19 @@ class SimpleCharacter:
                 log_lines.append(immune_msg)
             return
         
+        if getattr(self, "is_domain_immune", False) and effect_name != "護盾":
+            immune_msg = f" 🌻 【繚繞的餘溫】領域發揮作用，抵消了 [{effect_name}] 的附加！"
+            if immune_msg not in log_lines:
+                log_lines.append(immune_msg)
+            return
+        
+        if getattr(self, "passive", None) and getattr(self.passive, "special_tag", None) == "yingmu_passive":
+            if effect_name in ["免傷", "受損", "灼燒", "冰霜", "音樂"] or "印記" in effect_name:
+                immune_msg = f" 🛡️ **{self.name}** 觸發被動，排斥了 [{effect_name}] 效果！"
+                if immune_msg not in log_lines:
+                    log_lines.append(immune_msg)
+                return
+        
         if effect_name in DEBUFF_LIST and "免疫" in self.effects:
             log_lines.append(f" 🛡️ **{self.name}** 處於 [免疫] 狀態，抵擋了 [{effect_name}]")
             return
@@ -671,6 +772,20 @@ class SimpleCharacter:
     def take_damage(self, attacker, base_damage, is_true_damage=False, is_effect_damage=False):
         passive_logs = []
         
+        if not is_true_damage and not is_effect_damage and attacker and getattr(attacker, "passive", None) and getattr(attacker.passive, "special_tag", None) == "lingmo_passive":
+            has_debuff = any(k in DEBUFF_LIST for k in self.effects.keys())
+            if not has_debuff:
+                is_true_damage = True
+                
+        if not is_effect_damage and attacker and getattr(attacker, "passive", None) and getattr(attacker.passive, "special_tag", None) == "tingmi_passive":
+            if random.randint(1, 100) <= 50:
+                if "中毒" in self.effects:
+                    self.effects["中毒"] += 1
+                    passive_logs.append(f" 🧪 **{attacker.name}** 的 [背光高照] 觸發，將 **{self.name}** 身上的 [中毒] 延長了 1 回合！")
+                else:
+                    if random.randint(1, 100) <= 50:
+                        self.add_effect("中毒", 1, passive_logs)
+        
         # 1. 防禦計算
         if is_true_damage or is_effect_damage:
             actual_damage = base_damage
@@ -678,23 +793,36 @@ class SimpleCharacter:
             curr_def = self.get_current_def()
             actual_damage = max(1, base_damage if base_damage + curr_def == 0 else int(base_damage * (base_damage / (base_damage + curr_def))))
 
-        # 👉 新增：無敵狀態絕對防禦直接把傷害歸 0
+        # 2. 無敵判定
         if "無敵" in self.effects:
             actual_damage = 0
             passive_logs.append(f" ✨ **{self.name}** 處於 [無敵] 狀態，免疫了所有傷害")
+            
+        # 3. 絕對免傷池結算 (包含陽瑜被動與免傷印記)
+        damage_reduction = 0.0
+        
+        if "免傷" in getattr(self, "effect_stacks", {}):
+            damage_reduction += 0.03 * self.effect_stacks["免傷"]
+            
+        if "嘲諷" in self.effects and getattr(self, "passive", None) and getattr(self.passive, "special_tag", None) == "yangyu_passive":
+            damage_reduction += 0.70
+            
+        damage_reduction = min(1.0, damage_reduction)
+        
+        if damage_reduction > 0 and actual_damage > 0:
+            reduced_amount = int(actual_damage * damage_reduction)
+            actual_damage = max(1, actual_damage - reduced_amount)
 
-        # 1.5 狀態增減傷 (易傷 / 免傷 / 受損 / 破甲 / 陽瑜被動減傷 / 梓旭特攻)
+        # 4. 增傷與特殊倍率結算
         if "易傷" in self.effects: actual_damage = int(actual_damage * 1.25)
-        if "受損" in self.effect_stacks: actual_damage = int(actual_damage * (1 + 0.03 * self.effect_stacks["受損"]))
-        if "免傷" in self.effect_stacks: actual_damage = int(actual_damage * (1 - 0.03 * self.effect_stacks["免傷"]))
+        if "受損" in getattr(self, "effect_stacks", {}): actual_damage = int(actual_damage * (1 + 0.03 * self.effect_stacks["受損"]))
         if attacker and "破甲" in attacker.effects and self.shield_hp > 0: actual_damage = int(actual_damage * 1.5)
-        if "嘲諷" in self.effects and getattr(self, "passive", None) and getattr(self.passive, "special_tag", None) == "yangyu_passive": actual_damage = int(actual_damage * 0.5)
         if "昏迷" in self.effects and attacker and getattr(attacker, "passive", None) and getattr(attacker.passive, "special_tag", None) == "zixu_passive": actual_damage = int(actual_damage * 1.5)
 
         total_dmg_this_hit = 0
         ignores_shield = attacker and getattr(attacker, "passive", None) and getattr(attacker.passive, "special_tag", None) == "yuming_passive"
 
-        # 2. 護盾抵擋
+        # 5. 護盾抵擋
         if not is_effect_damage and self.shield_hp > 0:
             if ignores_shield:
                 total_dmg_this_hit = actual_damage
@@ -753,11 +881,12 @@ class SimpleCharacter:
                             self.passive_cd = getattr(self_passive, "cd", 0) 
                             
                             if self_passive.special_tag == "lingyu_passive":
-                                heal_amt = int(self.max_hp * 0.5)
+                                heal_amt = int(self.max_hp * 0.7)
                                 actual_heal = self.apply_heal(heal_amt, passive_logs, self)
                                 if actual_heal > 0: 
-                                    passive_logs.append(f" 🌸 **{self.name}** 生命值低於 10%，觸發被動恢復 `{actual_heal}` 點生命")
+                                    passive_logs.append(f" 🌸 **{self.name}** 生命值低於 30%，觸發被動恢復 `{actual_heal}` 點生命")
                                 self.add_effect("免疫", 2, passive_logs)
+                                self.add_effect("無敵", 2, passive_logs)
                             elif self_passive.special_tag == "yemo_passive":
                                 if attacker:
                                     attacker.add_effect("壓制", 1, passive_logs)
