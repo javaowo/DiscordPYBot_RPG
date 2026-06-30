@@ -58,7 +58,7 @@
       "normal": { "name": "綾語普攻", "multiplier": 1.5, "damage_type": "normal", "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成總量150%自身攻擊的攤傷。" },
       "small": { "name": "夜花滿盈", "multiplier": 0.0, "cd": 4, "initial_cd": 1, "target_type": "team", "hits": 1, "special_tag": "lingyu_small", "description": "給予全隊兩回合的「增攻」及「醒目」。" },
       "ultimate": { "name": "夜風吹襲", "multiplier": 0.0, "cd": 4, "initial_cd": 2, "target_type": "team", "hits": 1, "special_tag": "lingyu_ult", "description": "給予全隊兩回合的「不屈」及「治癒」。" },
-      "passive": { "name": "夜花綻放", "trigger": "on_hit", "chance": 100, "max_triggers_per_battle": 1, "special_tag": "lingyu_passive", "description": "當自身生命小於10%時，自身立即恢復50%最大生命值，並獲得「免疫」兩回合。此效果整場戰鬥只能發動一次。" }
+      "passive": { "name": "夜花綻放", "trigger": "on_hit", "chance": 100, "max_triggers_per_battle": 1, "special_tag": "lingyu_passive", "description": "當自身生命小於30%時，自身立即恢復70%最大生命值，並獲得「無敵」及「免疫」兩回合。此效果整場戰鬥只能發動一次。" }
     }
   },
   "lingyun": {
@@ -97,7 +97,7 @@
     "skills": {
       "normal": { "name": "葉茉普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "禁療", "effect_chance": 50, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有50%機率附上「禁療」一回合。" },
       "small": { "name": "楓葉飄零", "multiplier": 2.0, "cd": 4, "initial_cd": 1, "target_type": "highest_atk", "hits": 1, "effect": "沈默", "effect_chance": 50, "effect_duration": 2, "description": "對敵方攻擊力最高的目標造成200%傷害，有50%機率附加兩回合「沈默」。" },
-      "ultimate": { "name": "照起秋色", "multiplier": 1.5, "cd": 3, "initial_cd": 3, "target_type": "all", "hits": 1, "special_tag": "yemo_ult", "description": "對敵方全體造成150%傷害，有30%機率重置目標所有技能冷卻。" },
+      "ultimate": { "name": "照起秋色", "multiplier": 1.5, "cd": 5, "initial_cd": 3, "target_type": "all", "hits": 1, "special_tag": "yemo_ult", "description": "對敵方全體造成150%傷害，有25%機率重置目標所有技能冷卻。" },
       "passive": { "name": "楓船漂流", "trigger": "on_hit", "special_tag": "yemo_passive", "description": "自身生命值低於50%時，敵方對自身造成傷害皆有50%機率為目標附上一回合「壓制」。" }
     }
   },
@@ -106,8 +106,8 @@
     "hp": 1162345, "atk": 111517, "defense": 52134,
     "skills": {
       "normal": { "name": "訢悅普攻", "multiplier": 1.0, "damage_type": "normal", "description": "對敵方單體造成100%傷害。" },
-      "small": { "name": "天撒星碎", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "team", "special_tag": "xinyue_small", "description": "給予我方全體自身攻擊力50%值的護盾。" },
-      "ultimate": { "name": "彎月照地", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "xinyue_ult", "description": "給予我方全體兩回合的「免疫」，同時給予敵方全體附上兩回合的「壓制」。" },
+      "small": { "name": "天撒星碎", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "team", "special_tag": "xinyue_small", "description": "給予我方全體自身攻擊力100%值的護盾。" },
+      "ultimate": { "name": "彎月照地", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "all", "special_tag": "xinyue_ult", "description": "給予我方全體兩回合的「免疫」，同時給予敵方全體附上兩回合的「壓制」。" },
       "passive": { "name": "星月相伴", "trigger": "passive", "special_tag": "xinyue_passive", "description": "自身免疫「壓制」、「技能冷卻延長」效果。" }
     }
   },
@@ -126,8 +126,8 @@
     "hp": 1106700, "atk": 115190, "defense": 50379,
     "skills": {
       "normal": { "name": "寅潔普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "魅惑", "effect_chance": 15, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有15%機率附上一回合「魅惑」。" },
-      "small": { "name": "幻列之旋", "multiplier": 0.5, "cd": 4, "initial_cd": 2, "target_type": "all", "hits": 3, "effect": "魅惑", "effect_chance": 10, "effect_duration": 1, "apply_effect_per_hit": true, "description": "對敵方全體造成三段50%傷害，每段傷害皆有10%機率附上一回合「魅惑」。" },
-      "ultimate": { "name": "而後留生", "multiplier": 1.75, "cd": 5, "initial_cd": 1, "target_type": "all", "hits": 1, "effect": "魅惑", "effect_chance": 25, "effect_duration": 1, "description": "對敵方全體造成175%傷害，同時有25%機率附上一回合「魅惑」。" },
+      "small": { "name": "幻列之旋", "multiplier": 0.4, "cd": 4, "initial_cd": 2, "target_type": "all", "hits": 3, "effect": "魅惑", "effect_chance": 10, "effect_duration": 1, "apply_effect_per_hit": true, "description": "對敵方全體造成三段40%傷害，每段傷害皆有10%機率附上一回合「魅惑」。" },
+      "ultimate": { "name": "而後留生", "multiplier": 1.5, "cd": 5, "initial_cd": 2, "target_type": "all", "hits": 1, "effect": "魅惑", "effect_chance": 25, "effect_duration": 1, "description": "對敵方全體造成150%傷害，同時有25%機率附上一回合「魅惑」。" },
       "passive": { "name": "永生之眠", "trigger": "passive", "effect": "免疫魅惑", "description": "自身免疫「魅惑」。" }
     }
   },
@@ -138,7 +138,7 @@
       "normal": { "name": "陽瑜普攻", "multiplier": 1.0, "damage_type": "normal", "effect": "嘲諷", "effect_chance": 35, "effect_duration": 1, "description": "對敵方單體造成100%傷害，有35%機率給自身附上一回合「嘲諷」。" },
       "small": { "name": "花語：粉薔薇", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "self", "special_tag": "yangyu_small", "description": "給予自身兩回合的「嘲諷」及「治癒」。" },
       "ultimate": { "name": "花語：百合", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "yangyu_ult", "description": "淨化全場所有負面效果。成功淨化我方則其所有技能冷卻減一回合；成功淨化敵方則其所有技能冷卻延長一回合（自身不受影響）。" },
-      "passive": { "name": "繁花守候", "trigger": "passive", "special_tag": "yangyu_passive", "description": "自身身上有「嘲諷」時，所受傷害減少35%。" }
+      "passive": { "name": "繁花守候", "trigger": "passive", "special_tag": "yangyu_passive", "description": "自身身上有「嘲諷」時，所受傷害減少70%。" }
     }
   },
   "zixu": {
@@ -165,9 +165,9 @@
     "name": "風花雪月．祭羽", "role": "法師", "tags": ["禁療", "負面延長", "狀態反轉"],
     "hp": 1082345, "atk": 110098, "defense": 58230,
     "skills": {
-      "normal": { "name": "祭羽普攻", "multiplier": 1.2, "damage_type": "normal", "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成120%攤傷。" },
-      "small": { "name": "掄起微風", "multiplier": 1.4, "cd": 3, "initial_cd": 1, "target_type": "all", "effect": "禁療", "effect_chance": 50, "effect_duration": 2, "description": "對敵方全體造成140%傷害，有50%機率附加兩回合「禁療」。" },
-      "ultimate": { "name": "靜語細拂", "multiplier": 1.6, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "jiyu_ult", "description": "對敵方全體造成160%傷害，延長目標所有負面效果一回合。" },
+      "normal": { "name": "祭羽普攻", "multiplier": 1.0, "damage_type": "normal", "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成100%攤傷。" },
+      "small": { "name": "掄起微風", "multiplier": 1.0, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "禁療", "effect_chance": 25, "effect_duration": 2, "description": "對敵方全體造成100%傷害，有25%機率附加兩回合「禁療」。" },
+      "ultimate": { "name": "靜語細拂", "multiplier": 1.3, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "jiyu_ult", "description": "對敵方全體造成130%傷害，延長目標所有負面效果一回合。" },
       "passive": { "name": "順風庇護", "trigger": "passive", "cd": 1, "special_tag": "jiyu_passive", "description": "自身受到特定負面效果影響時，給予自身相對應的正面效果一回合（降攻轉增攻、降防轉增防、中毒轉治癒）。" }
     }
   },
@@ -206,8 +206,8 @@
     "hp": 1134000, "atk": 110340, "defense": 53400,
     "skills": {
       "normal": { "name": "琪雅普攻", "multiplier": 1.0, "target_type": "single", "effect": "音樂", "effect_duration": 999, "special_tag": "qiya_normal", "description": "對敵方單體造成100%傷害，並附上一層「音樂印記」。" },
-      "small": { "name": "餘音繚繞", "multiplier": 1.1, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "音樂", "effect_duration": 999, "description": "對敵方全體造成110%傷害，並附上一層「音樂印記」。" },
-      "ultimate": { "name": "音域擴張", "multiplier": 1.4, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "音樂", "effect_duration": 999, "special_tag": "qiya_ult", "description": "對全體造成140%傷害，附上一層「音樂印記」，並給予自身兩回合「迴避」。" },
+      "small": { "name": "餘音繚繞", "multiplier": 0.95, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "音樂", "effect_duration": 999, "description": "對敵方全體造成95%傷害，並附上一層「音樂印記」。" },
+      "ultimate": { "name": "音域擴張", "multiplier": 1.35, "cd": 4, "initial_cd": 1, "target_type": "all", "effect": "音樂", "effect_duration": 999, "description": "對全體造成135%傷害，附上一層「音樂印記」。" },
       "passive": { "name": "領域展開——耳機世界", "trigger": "passive", "special_tag": "qiya_passive", "description": "進場時發動，效果持續至自身死亡，領域展開期間，音樂印記中的額外傷害我方全體皆可觸發。" }
     }
   },
@@ -219,6 +219,46 @@
       "small": { "name": "椅上回憶", "multiplier": 0, "cd": 4, "initial_cd": 1, "target_type": "self", "special_tag": "yechen_small", "description": "優先竊取場上的嘲諷（敵>我），若竊取成功，則給予自身一層「免傷印記」，並延長一回合「嘲諷」；反之，給予自身兩回合的「嘲諷」。" },
       "ultimate": { "name": "千秋萬語", "multiplier": 0, "cd": 4, "initial_cd": 2, "target_type": "self", "special_tag": "yechen_ult", "description": "折損自身現有25%生命，轉為等值的「護盾」，給予自身兩回合「抗寒」及「治癒」。" },
       "passive": { "name": "斑斕色彩", "trigger": "passive", "special_tag": "yechen_passive", "description": "每次自身的護盾被擊破時，給自己附上一層「免傷印記」。" }
+    }
+  },
+  "lingmo": {
+    "name": "櫻和枝散．玲茉", "role": "戰士", "tags": ["真實傷害", "中毒", "禁療", "壓制"],
+    "hp": 1113010, "atk": 120666, "defense": 54800,
+    "skills": {
+      "normal": { "name": "玲茉普攻", "multiplier": 1.0, "target_type": "single", "description": "對敵方單體造成100%傷害。" },
+      "small": { "name": "落花．裂", "multiplier": 2.5, "cd": 4, "initial_cd": 1, "target_type": "single", "effect": "中毒", "effect_duration": 2, "description": "對敵方單體造成250%傷害，並附加兩回合「中毒」。" },
+      "ultimate": { "name": "降花．爆", "multiplier": 3.5, "cd": 4, "initial_cd": 2, "target_type": "single", "special_tag": "lingmo_ult", "description": "對敵方單體造成350%傷害，分別有50%機率附加兩回合「壓制」、「禁療」。" },
+      "passive": { "name": "迂花．玄", "trigger": "passive", "special_tag": "lingmo_passive", "description": "若攻擊時目標身上没有負面效果，則自身攻擊轉為真實傷害。" }
+    }
+  },
+  "tangjin": {
+    "name": "葵花青絆．棠謹", "role": "繪域師", "tags": ["領域展開", "群體驅散", "狀態免疫"],
+    "hp": 1123530, "atk": 119800, "defense": 51200,
+    "skills": {
+      "normal": { "name": "棠謹普攻", "multiplier": 0, "target_type": "team", "special_tag": "tangjin_normal", "description": "折損自身10%現有生命力，其他成員恢復自身折損生命值。" },
+      "small": { "name": "撥動琴弦", "multiplier": 1.0, "cd": 4, "initial_cd": 1, "target_type": "all", "special_tag": "tangjin_small", "description": "對敵方全體造成100%傷害，有50%機率驅散一個正面效果。" },
+      "ultimate": { "name": "聲音相伴", "multiplier": 0, "cd": 6, "initial_cd": 1, "target_type": "self", "special_tag": "tangjin_ult", "description": "領域展開——「繚繞的餘溫」，領域展開期間，雙方無法被附上任何正負面效果。" },
+      "passive": { "name": "清花麗水", "trigger": "passive", "special_tag": "tangjin_passive", "description": "當場上有任何領域效果時，自身小招CD變為0。" }
+    }
+  },
+  "tingmi": {
+    "name": "夕昔餘輝．庭彌", "role": "控場者", "tags": ["冰霜", "冰凍", "中毒延長", "全體攤傷"],
+    "hp": 1091302, "atk": 109130, "defense": 55913,
+    "skills": {
+      "normal": { "name": "庭彌普攻", "multiplier": 1.0, "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成100%攤傷。" },
+      "small": { "name": "寂靜回應", "multiplier": 1.0, "cd": 4, "target_type": "all", "effect": "冰霜", "effect_duration": 999, "effect_chance": 15, "description": "對敵方全體造成100%傷害，有15%機率附上一層「冰霜」。" },
+      "ultimate": { "name": "夕陽漫步", "multiplier": 1.5, "cd": 4, "initial_cd": 2, "target_type": "all", "special_tag": "tingmi_ult", "description": "對敵方全體造成150%傷害，每層「冰霜」提升10%附上一回合「冰凍」的機率。若成功冰凍，則清除目標身上所有「冰霜」；反之，則附上一層「冰霜」。" },
+      "passive": { "name": "背光高照", "trigger": "passive", "special_tag": "tingmi_passive", "description": "自身攻擊時皆有50%機率延長目標身上「中毒」效果一回合，若此延長觸發時目標身上沒有「中毒」效果，則有50%機率附上一回合「中毒」。" }
+    }
+  },
+  "yingmu": {
+    "name": "矇首眺望．瀅暮", "role": "輔助", "tags": ["復活", "持續治療", "抗寒", "印記免疫"],
+    "hp": 1165400, "atk": 131313, "defense": 51900,
+    "skills": {
+      "normal": { "name": "瀅暮普攻", "multiplier": 1.0, "target_type": "all", "is_split_damage": true, "description": "對敵方全體造成100%攤傷。" },
+      "small": { "name": "闇影隨逸", "multiplier": 0, "cd": 5, "initial_cd": 1, "target_type": "team", "special_tag": "yingmu_small", "description": "給予我方全體兩回合「抗寒」、「治癒」。" },
+      "ultimate": { "name": "寐謎茫海", "multiplier": 0, "cd": 5, "initial_cd": 2, "target_type": "team", "special_tag": "yingmu_ult", "description": "隨機復活我方一名成員，若無人陣亡，則恢復我方目前生命百分比最低的成員。復活量及恢復量皆為自身50%生命上限。" },
+      "passive": { "name": "脫離夜涯", "trigger": "passive", "special_tag": "yingmu_passive", "description": "自身無法被附上任何正負面的「印記」效果。" }
     }
   }
 }
